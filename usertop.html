@@ -10,6 +10,15 @@
 
     <script>
         osql.requireLogin();
+
+        $().ready(function () {
+            int();
+        })
+
+        function int() {
+            var name = sessionStorage.getItem('username');
+            document.getElementById('welcome').innerHTML = 'ようこそ' + name + 'さん';
+        }
     </script>
 
 </head>
