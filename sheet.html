@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+
+        function button1Pressed() {
+            execInsert();
+        }
+
+        async function execInsert() {
+            var sheetnumber = document.getElementById('tf1').value;
+            var room_id = document.getElementById('tf2').value;
+            var room_name = document.getElementById('tf3').value;
+
+            var sql = `insert into Sheets (id, room_id,room) values("${sheetnumber}", "${room_id}", "${room_name}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById('result').innerHTML = 'OK';
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>座席管理</h1>
+    sheetnumber:<input id="tf1" value="" type="textfield">
+    <br>
+    room_id:<input id="tf2" value="" type="textfield">
+    <br>
+    roomname:<input id="tf3" value="" type="textfield">
+    <br>
+    <button onclick="button1Pressed()">登録</button>
+    <br>
+    <p id="result"></p>
+</body>
+
+</html>
