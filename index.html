@@ -25,12 +25,14 @@
                 document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
                 return;
             }
-
+            // sessionStorageにログインユーザ情報登録
+            sessionStorage.setItem('userid', objects[0].id);
             sessionStorage.setItem('username', objects[0].name);
             sessionStorage.setItem('birthday', objects[0].birthday);
 
             location.href = 'usertop.html';
         }
+
     </script>
 
 </head>
