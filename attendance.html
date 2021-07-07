@@ -19,6 +19,22 @@
                 const userId = sessionStorage.getItem("userid");
                 document.getElementById("user_id").value = userId;
             }
+
+            // User_Sheetに登録する
+            async function insertUser_Sheet() {
+                var userId = Number(document.getElementById("user_id").value);
+                var sheetId = Number(document.getElementById("sheet_id").value);
+
+                var sql = `insert into User_Sheet (user_id, sheet_id) values(${userId}, ${sheetId});`;
+                await osql.connect(sql);
+                console.log(sql);
+
+                document.getElementById("result").innerHTML = "OK";
+            }
+
+            function button1Pressed() {
+                insertUser_Sheet(); // User_Sheetに登録する
+            }
         </script>
     </head>
 
