@@ -25,7 +25,7 @@
                 var userId = Number(document.getElementById("user_id").value);
                 var sheetId = Number(document.getElementById("sheet_id").value);
 
-                var sql = `insert into User_Sheet (user_id, sheet_id) values(${userId}, ${sheetId});`;
+                var sql = `insert into User_Sheet (user_id, sheet_id, created_at) values(${userId}, ${sheetId}, now());`;
                 await osql.connect(sql);
                 console.log(sql);
 
