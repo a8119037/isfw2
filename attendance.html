@@ -9,13 +9,21 @@
 
         <script>
             osql.requireLogin();
-
-            $(document).ready(function () {});
+            // フォーム内容をUser_Sheetに登録させる
+            $(document).ready(function () {
+                // useridを自動入力しておく
+            });
         </script>
     </head>
 
     <body>
         <h1>出席登録</h1>
-        <p id="result">xxxx</p>
+        user id:<input id="tf1" value="" type="textfield" />
+        <br />
+        座席のid:<input id="tf2" value="" type="textfield" />
+        <br />
+        <button onclick="button1Pressed()">登録</button>
+        <br />
+        <p id="result"></p>
     </body>
 </html>
