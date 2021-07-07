@@ -11,19 +11,25 @@
             osql.requireLogin();
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
-                // useridを自動入力しておく
+                setUserId(); // useridをテキストフィールドに入力
             });
+
+            // useridをテキストフィールドに入力
+            function setUserId() {
+                const userId = sessionStorage.getItem("userid");
+                document.getElementById("user_id").value = userId;
+            }
         </script>
     </head>
 
     <body>
         <h1>出席登録</h1>
-        user id:<input id="tf1" value="" type="textfield" />
+        user id:<input id="user_id" value="" type="textfield" />
         <br />
-        座席のid:<input id="tf2" value="" type="textfield" />
+        座席のid:<input id="sheet_id" value="" type="textfield" />
         <br />
         <button onclick="button1Pressed()">登録</button>
         <br />
-        <p id="result"></p>
+        <p id="result">xxx</p>
     </body>
 </html>
