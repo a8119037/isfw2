@@ -12,12 +12,24 @@
 
             $().ready(function () {
                 init();
+                attendanceInfo();
             });
-
             function init() {
                 var name = sessionStorage.getItem("username");
-                document.getElementById("welcome").innerHTML =
-                    "ようこそ" + name + "さん";
+                document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
+            }
+
+            // 出席情報を表示
+            async function attendanceInfo() {
+                const userId = sessionStorage.getItem("userid");
+                // User_Sheetから最新の出席情報をとってくる
+                const sql = `select * from User_Sheet where user_id = "${userId}" order by created_at desc;`;
+                const objects = await osql.connect(sql);
+                console.log(objects[0]);
+
+                document.getElementById(
+                    "attendanceInfo"
+                ).outerHTML = `最終登録: ${objects[0].created_at}, 座席${objects[0].sheet_id}`;
             }
         </script>
     </head>
@@ -26,6 +38,7 @@
         <h1>ユーザトップ</h1>
         <p id="welcome">ようこそxxさん</p>
         <hr />
-        <a href="attendance.html">出席登録へ</a>
+        <a id="attendanceLink" href="attendance.html">出席登録へ</a>
+        <p id="attendanceInfo"></p>
     </body>
 </html>
