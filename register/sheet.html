@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <script type="text/javascript" src="lib/jquery.min.js"></script>
-        <script type="text/javascript" src="lib/osql.js"></script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <script>
-            osql.requireLogin();
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/osql.js"></script>
 
-            function button1Pressed() {
-                execInsert();
-            }
+    <script>
+        osql.requireLogin();
 
-            async function execInsert() {
-                var sheet_id = document.getElementById("tf1").value;
-                var room_id = document.getElementById("tf2").value;
-                var room_name = document.getElementById("tf3").value;
+        function button1Pressed() {
+            execInsert();
+        }
 
-                var sql = `insert into Sheets (id, room_id, room) values("${sheet_id}", "${room_id}", "${room_name}");`;
-                var objects = await osql.connect(sql);
-                console.log(objects);
+        async function execInsert() {
+            //var Sheet = document.getElementById("tf1").value;
+            var Name = document.getElementById("tf2").value;
+            var Room = document.getElementById("tf3").value;
 
-                document.getElementById("result").innerHTML = "OK";
-            }
-        </script>
-    </head>
+            var sql = `insert into Sheets (name, room) values("${Name}", "${Room}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
 
-    <body>
-        <h1>座席管理</h1>
-        sheet_id:<input id="tf1" value="" type="textfield" />
-        <br />
-        room_id:<input id="tf2" value="" type="textfield" />
-        <br />
-        room_name:<input id="tf3" value="" type="textfield" />
-        <br />
-        <button onclick="button1Pressed()">登録</button>
-        <br />
-        <p id="result"></p>
-    </body>
+            document.getElementById("result").innerHTML = "OK";
+        }
+    </script>
+</head>
+
+<body>
+    <h1>座席管理</h1>
+    name:<input id="tf2" value="" type="textfield" />
+    <br />
+    room:<input id="tf3" value="" type="textfield" />
+    <br />
+    <button onclick="button1Pressed()">登録</button>
+    <br />
+    <p id="result"></p>
+</body>
+
 </html>
