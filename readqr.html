@@ -1,0 +1,58 @@
+<!-- QRコードリーダーのテスト -->
+<!DOCTYPE html>
+<html>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+        <script>
+            function onFileSelected(input) {
+                console.log(1);
+                var file = input.files[0];
+
+                var reader = new FileReader();
+
+                reader.onload = onFileLoaded;
+
+                reader.readAsDataURL(file);
+            }
+
+            function onFileLoaded(e) {
+                console.log(2);
+                var src_data = e.target.result;
+
+                var img = new Image();
+
+                img.onload = onImageSetted;
+                img.src = src_data;
+            }
+
+            function onImageSetted(e) {
+                console.log(3);
+                var data = createImageData(e.target);
+
+                document.getElementById("test_canvas").getContext("2d").putImageData(data, 0, 0);
+            }
+
+            function createImageData(img) {
+                console.log(4);
+                var ca = document.createElement("canvas");
+
+                ca.width = img.naturalWidth;
+                ca.height = img.naturalHeight;
+
+                var ct = ca.getContext("2d");
+
+                ct.drawImage(img, 0, 0);
+
+                var data = ct.getImageData(0, 0, ca.width, ca.height);
+                console.log(jsQR(data.data, ca.width, ca.height));
+
+                return data;
+            }
+        </script>
+
+        <input type="file" onchange="onFileSelected(this)" />
+        <br />
+        <canvas id="test_canvas" width="256" height="256" style="border: 1px solid"></canvas>
+    </body>
+</html>
