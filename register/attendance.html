@@ -26,12 +26,12 @@
                 const userId = Number(document.getElementById("user_id").value);
                 const sheetId = Number(document.getElementById("sheet_id").value);
 
-                const sql = `insert into User_Sheet (user_id, sheet_id, created_at) values(${userId}, ${sheetId}, now());`;
+                const sql = `insert into User_Sheet (user_id, sheet_id, created_at, is_attend) values(${userId}, ${sheetId}, now(), 1);`;
                 await osql.connect(sql);
                 console.log(sql);
 
                 document.getElementById("result").innerHTML = "OK";
-                location.href = "usertop.html";
+                location.href = "../usertop.html";
             }
 
             function button1Pressed() {
