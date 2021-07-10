@@ -15,7 +15,7 @@
             $(document).ready(function () {
                 setUserId(); // useridをテキストフィールドに入力
                 setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
-                setAttendedSheetId(osql.getParam("sheet"));
+                setAttendedSheetId(osql.getParam("sheet")); // sheet_idのデフォルト値として直近の出席した席を入力
             });
 
             // sheet_idのデフォルト値として直近の出席した席を入力
@@ -44,13 +44,24 @@
             async function insertUser_Sheet() {
                 const userId = Number(document.getElementById("user_id").value);
                 const sheetId = Number(document.getElementById("sheet_id").value);
-                //出席時の登録はis_attend=1, 退席時の登録はis_attend=0とする
-                const sql = `insert into User_Sheet (user_id, sheet_id, created_at, is_attend) values(${userId}, ${sheetId}, now(), 1);`;
-                await osql.connect(sql);
-                console.log(sql);
 
-                document.getElementById("result").innerHTML = "OK";
-                location.href = "../usertop.html";
+                //出席時の登録はis_attend=true, 退席時の登録はis_attend=falseとする
+                let isAttend = 99; // エラー用
+                if (document.getElementById("attend").checked) {
+                    isAttend = true;
+                } else if (document.getElementById("leave").checked) {
+                    isAttend = false;
+                }
+
+                if (isAttend === 99) {
+                    alert("出席または退席をボタンで選択してください");
+                } else {
+                    const sql = `insert into User_Sheet (user_id, sheet_id, created_at, is_attend) values(${userId}, ${sheetId}, now(), ${isAttend});`;
+                    await osql.connect(sql);
+                    console.log(sql);
+                    document.getElementById("result").innerHTML = "OK";
+                    location.href = "../usertop.html";
+                }
             }
 
             function button1Pressed() {
@@ -143,8 +154,8 @@
         <br />
         座席のid:<input id="sheet_id" value="" type="textfield" />
         <br />
-        <label for="attend"><input id="attend" name="q1" type="radio" value="1" />出席</label>　
-        <label for="leave"><input id="leave" name="q1" type="radio" value="0" />退席</label>
+        <label for="attend"><input id="attend" name="is_attend" type="radio" value="1" />出席</label>　
+        <label for="leave"><input id="leave" name="is_attend" type="radio" value="0" />退席</label>
         <br />
         <button onclick="button1Pressed()">登録</button>
         <br />
