@@ -10,12 +10,14 @@
 
         <script>
             osql.requireLogin();
+
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
                 setUserId(); // useridをテキストフィールドに入力
-                setCheckedRadio(osql.getParam("state"));
+                setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
             });
 
+            // radioボタンをデフォルトで選択状態にする
             function setCheckedRadio(state) {
                 if (state == "leave") {
                     document.getElementById("leave").setAttribute("checked", "");
