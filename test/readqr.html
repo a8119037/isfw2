@@ -54,17 +54,17 @@
                 // QRコードのオブジェクトを取得
                 const qrObj = getQRObject(imageData, canvasInvisible);
 
-                // QRの表示 リサイズのために表示用じゃないcanvasにputImageDataして、表示用canvasにdrawImageする
+                // QRの表示 scaleメソッドを使うために表示用じゃないcanvasにputImageDataして、表示用canvasにdrawImageする
                 ctx.putImageData(imageData, 0, 0);
                 const canvas = document.getElementById("imagePreview").getContext("2d");
                 canvas.clearRect(0, 0, 1000, 1000); // canvasの初期化 前画像の削除
 
-                // putImageDataした画像サイズからhtmlのcanvas要素のwidth,heightへのscale
+                // putImageDataした画像サイズからhtmlのcanvas要素のwidth,heightにリサイズして表示
                 const hScale = 512 / canvasInvisible.height;
                 const wScale = hScale;
                 canvas.scale(wScale, hScale);
                 canvas.drawImage(canvasInvisible, 0, 0);
-                canvas.scale(1 / wScale, 1 / hScale);
+                canvas.scale(1 / wScale, 1 / hScale); // scaleのリセット
 
                 return qrObj.data;
             }
