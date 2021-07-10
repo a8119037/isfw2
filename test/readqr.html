@@ -21,11 +21,11 @@
 
                 const img = new Image();
 
-                img.onload = onImageSetted;
+                img.onload = onImageSet;
                 img.src = src_data;
             }
 
-            function onImageSetted(e) {
+            function onImageSet(e) {
                 console.log(3);
                 const data = getQRData(e.target);
             }
