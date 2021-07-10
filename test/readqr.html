@@ -27,10 +27,10 @@
 
             function onImageSetted(e) {
                 console.log(3);
-                const data = createImageData(e.target);
+                const data = getQRData(e.target);
             }
 
-            function getQRData(imageData, canvas) {
+            function getQRObject(imageData, canvas) {
                 const qrObj = jsQR(imageData.data, canvas.width, canvas.height);
 
                 if (qrObj) console.log(qrObj.data);
@@ -39,7 +39,7 @@
                 return qrObj;
             }
 
-            function createImageData(img) {
+            function getQRData(img) {
                 // 表示されないjs上でしか利用しないcanvas要素
                 const canvasInvisible = document.createElement("canvas");
 
@@ -52,7 +52,7 @@
                 const imageData = ctx.getImageData(0, 0, canvasInvisible.width, canvasInvisible.height);
 
                 // QRコードのオブジェクトを取得
-                const qrObj = getQRData(imageData, canvasInvisible);
+                const qrObj = getQRObject(imageData, canvasInvisible);
 
                 // QRの表示 リサイズのために表示用じゃないcanvasにputImageDataして、表示用canvasにdrawImageする
                 ctx.putImageData(imageData, 0, 0);
