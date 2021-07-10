@@ -6,6 +6,7 @@
 
         <script type="text/javascript" src="../lib/jquery.min.js"></script>
         <script type="text/javascript" src="../lib/osql.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
         <script>
             osql.requireLogin();
@@ -37,11 +38,89 @@
             function button1Pressed() {
                 insertUser_Sheet(); // User_Sheetに登録する
             }
+            function onFileSelected(input) {
+                console.log(1);
+                const file = input.files[0];
+                // ファイルのアップロードをキャッチ
+                const reader = new FileReader();
+                reader.onload = onFileLoaded;
+                reader.readAsDataURL(file);
+            }
+
+            function onFileLoaded(e) {
+                console.log(2);
+                const src_data = e.target.result;
+
+                const img = new Image();
+                img.onload = onImageSet;
+                img.src = src_data;
+            }
+
+            function onImageSet(e) {
+                console.log(3);
+                const data = getQRData(e.target);
+                if (!data) {
+                    alert("QRコードが読み取れませんでした。");
+                } else {
+                    // フォームに入力
+                    document.getElementById("sheet_id").value = data;
+                }
+            }
+
+            function getQRObject(imageData, canvas) {
+                let qrObj = jsQR(imageData.data, canvas.width, canvas.height);
+
+                if (qrObj) {
+                    console.log(qrObj.data);
+                } else {
+                    console.log(qrObj);
+                    qrObj = {};
+                    qrObj.data = null;
+                }
+
+                return qrObj;
+            }
+
+            function getQRData(img) {
+                // 非表示のjs上でしか利用しないcanvas要素
+                const canvasInvisible = document.createElement("canvas");
+
+                canvasInvisible.width = img.naturalWidth;
+                canvasInvisible.height = img.naturalHeight;
+
+                // canvasにdrawImageしてそこからimageDataオブジェクトを取得
+                const ctx = canvasInvisible.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                const imageData = ctx.getImageData(0, 0, canvasInvisible.width, canvasInvisible.height);
+
+                // QRコードのオブジェクトを取得
+                const qrObj = getQRObject(imageData, canvasInvisible);
+
+                // QRの表示 scaleメソッドを使うために表示用じゃないcanvasにputImageDataして、表示用canvasにdrawImageする
+                ctx.putImageData(imageData, 0, 0);
+                const canvas = document.getElementById("imagePreview").getContext("2d");
+                canvas.clearRect(0, 0, 1000, 1000); // canvasの初期化 前画像の削除
+
+                // putImageDataした画像サイズからhtmlのcanvas要素のwidth,heightにリサイズして表示
+                const hScale = 112 / canvasInvisible.height;
+                const wScale = hScale;
+                canvas.scale(wScale, hScale);
+                canvas.drawImage(canvasInvisible, 0, 0);
+                canvas.scale(1 / wScale, 1 / hScale); // scaleのリセット
+
+                return qrObj.data;
+            }
         </script>
     </head>
 
     <body>
         <h1>出席登録</h1>
+        <br />
+        <canvas id="imagePreview" width="112" height="112" style="border: 1px solid"></canvas>
+        <br />
+        <input type="file" onchange="onFileSelected(this)" />
+        <br />
+        <br />
         user id:<input id="user_id" value="" type="textfield" />
         <br />
         座席のid:<input id="sheet_id" value="" type="textfield" />
