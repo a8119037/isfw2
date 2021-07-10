@@ -13,10 +13,16 @@
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
                 setUserId(); // useridをテキストフィールドに入力
-                const state = osql.getParam("state");
-                console.log(state);
+                setCheckedRadio(osql.getParam("state"));
             });
 
+            function setCheckedRadio(state) {
+                if (state == "leave") {
+                    document.getElementById("leave").setAttribute("checked", "");
+                } else {
+                    document.getElementById("attend").setAttribute("checked", "");
+                }
+            }
             // useridをテキストフィールドに入力
             function setUserId() {
                 const userId = sessionStorage.getItem("userid");
