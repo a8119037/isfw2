@@ -30,6 +30,7 @@
                     alert("QRコードが読み取れませんでした。");
                 } else {
                     // フォームに入力
+                    document.getElementById("sheet_id").value = data;
                 }
             }
 
@@ -68,7 +69,7 @@
                 canvas.clearRect(0, 0, 1000, 1000); // canvasの初期化 前画像の削除
 
                 // putImageDataした画像サイズからhtmlのcanvas要素のwidth,heightにリサイズして表示
-                const hScale = 512 / canvasInvisible.height;
+                const hScale = 112 / canvasInvisible.height;
                 const wScale = hScale;
                 canvas.scale(wScale, hScale);
                 canvas.drawImage(canvasInvisible, 0, 0);
@@ -80,6 +81,8 @@
 
         <input type="file" onchange="onFileSelected(this)" />
         <br />
-        <canvas id="imagePreview" width="512" height="512" style="border: 1px solid"></canvas>
+        <canvas id="imagePreview" width="112" height="112" style="border: 1px solid"></canvas>
+        <br />
+        座席のid:<input id="sheet_id" value="" type="textfield" />
     </body>
 </html>
