@@ -26,6 +26,11 @@
             function onImageSet(e) {
                 console.log(3);
                 const data = getQRData(e.target);
+                if (!data) {
+                    alert("QRコードが読み取れませんでした。");
+                } else {
+                    // フォームに入力
+                }
             }
 
             function getQRObject(imageData, canvas) {
