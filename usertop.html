@@ -30,6 +30,17 @@
                 document.getElementById(
                     "attendanceInfo"
                 ).outerHTML = `最終登録: ${objects[0].created_at}, 座席${objects[0].sheet_id}`;
+
+                // attendance.htmlへのリンク
+                if (objects[0].is_attend == 0) {
+                    document.getElementById(
+                        "attendanceLink"
+                    ).innerHTML = `<a href="register/attendance.html">出席登録へ</a>`;
+                } else if (objects[0].is_attend == 1) {
+                    document.getElementById(
+                        "attendanceLink"
+                    ).innerHTML = `<a href="register/attendance.html?state=leave">出席登録へ</a>`;
+                }
             }
         </script>
     </head>
@@ -38,7 +49,7 @@
         <h1>ユーザトップ</h1>
         <p id="welcome">ようこそxxさん</p>
         <hr />
-        <a id="attendanceLink" href="register/attendance.html">出席登録へ</a>
-        <p id="attendanceInfo"></p>
+        <span id="attendanceLink">出席登録へ</span>
+        <span id="attendanceInfo"></span>
     </body>
 </html>
