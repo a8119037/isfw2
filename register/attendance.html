@@ -39,6 +39,25 @@
                 document.getElementById("user_id").value = userId;
                 document.getElementById("user_id").setAttribute("readonly", "");
             }
+            // フォームのバリデーション
+            function validationUserSheet() {
+                const userId = document.getElementById("user_id").value;
+                const sheetId = document.getElementById("sheet_id").value;
+                let check = true;
+                let text = "";
+                if (!userId) {
+                    text += "user_idを入力してください";
+                    check = false;
+                }
+                if (!sheetId) {
+                    text += "sheet_idを入力してください";
+                    check = false;
+                }
+                if (!check) {
+                    alert(text);
+                }
+                return check;
+            }
 
             // User_Sheetに登録する
             async function insertUser_Sheet() {
@@ -55,7 +74,7 @@
 
                 if (isAttend === 99) {
                     alert("出席または退席をボタンで選択してください");
-                } else {
+                } else if (validationUserSheet()) {
                     const sql = `insert into User_Sheet (user_id, sheet_id, created_at, is_attend) values(${userId}, ${sheetId}, now(), ${isAttend});`;
                     await osql.connect(sql);
                     console.log(sql);
