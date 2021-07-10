@@ -30,28 +30,31 @@
                 const data = createImageData(e.target);
             }
 
-            function getQRData(imageData) {
-                const qrObj = jsQR(imageData.data, canvasInvisible.width, canvasInvisible.height);
-                if (qrObj) {
-                    const qrData = qrObj.data;
-                }
-                console.log(qrObj);
+            function getQRData(imageData, canvas) {
+                const qrObj = jsQR(imageData.data, canvas.width, canvas.height);
+
+                if (qrObj) console.log(qrObj.data);
+                else console.log(qrObj);
+
                 return qrObj;
             }
 
             function createImageData(img) {
+                // 表示されないjs上でしか利用しないcanvas要素
                 const canvasInvisible = document.createElement("canvas");
 
                 canvasInvisible.width = img.naturalWidth;
                 canvasInvisible.height = img.naturalHeight;
 
+                // canvasからimageDataオブジェクトの取得
                 const ctx = canvasInvisible.getContext("2d");
                 ctx.drawImage(img, 0, 0);
-
                 const imageData = ctx.getImageData(0, 0, canvasInvisible.width, canvasInvisible.height);
-                // QRコードのデータオブジェクト取得
-                const qrObj = getQRObject(imageData);
-                // QRの表示
+
+                // QRコードのオブジェクトを取得
+                const qrObj = getQRData(imageData, canvasInvisible);
+
+                // QRの表示 リサイズのために表示用じゃないcanvasにputImageDataして、表示用canvasにdrawImageする
                 ctx.putImageData(imageData, 0, 0);
                 const canvas = document.getElementById("imagePreview").getContext("2d");
                 canvas.clearRect(0, 0, 1000, 1000); // canvasの初期化 前画像の削除
