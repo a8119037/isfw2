@@ -11,7 +11,6 @@
                 // ファイルのアップロードをキャッチ
                 const reader = new FileReader();
                 reader.onload = onFileLoaded;
-
                 reader.readAsDataURL(file);
             }
 
@@ -20,7 +19,6 @@
                 const src_data = e.target.result;
 
                 const img = new Image();
-
                 img.onload = onImageSet;
                 img.src = src_data;
             }
@@ -31,22 +29,27 @@
             }
 
             function getQRObject(imageData, canvas) {
-                const qrObj = jsQR(imageData.data, canvas.width, canvas.height);
+                let qrObj = jsQR(imageData.data, canvas.width, canvas.height);
 
-                if (qrObj) console.log(qrObj.data);
-                else console.log(qrObj);
+                if (qrObj) {
+                    console.log(qrObj.data);
+                } else {
+                    console.log(qrObj);
+                    qrObj = {};
+                    qrObj.data = null;
+                }
 
                 return qrObj;
             }
 
             function getQRData(img) {
-                // 表示されないjs上でしか利用しないcanvas要素
+                // 非表示のjs上でしか利用しないcanvas要素
                 const canvasInvisible = document.createElement("canvas");
 
                 canvasInvisible.width = img.naturalWidth;
                 canvasInvisible.height = img.naturalHeight;
 
-                // canvasからimageDataオブジェクトの取得
+                // canvasにdrawImageしてそこからimageDataオブジェクトを取得
                 const ctx = canvasInvisible.getContext("2d");
                 ctx.drawImage(img, 0, 0);
                 const imageData = ctx.getImageData(0, 0, canvasInvisible.width, canvasInvisible.height);
