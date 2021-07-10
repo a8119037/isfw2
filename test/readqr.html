@@ -28,32 +28,47 @@
             function onImageSetted(e) {
                 console.log(3);
                 const data = createImageData(e.target);
+            }
 
-                document.getElementById("test_canvas").getContext("2d").putImageData(data, 0, 0);
+            function getQRData(imageData) {
+                const qrObj = jsQR(imageData.data, canvasInvisible.width, canvasInvisible.height);
+                if (qrObj) {
+                    const qrData = qrObj.data;
+                }
+                console.log(qrObj);
+                return qrObj;
             }
 
             function createImageData(img) {
-                console.log(4);
-                const ca = document.createElement("canvas");
+                const canvasInvisible = document.createElement("canvas");
 
-                ca.width = img.naturalWidth;
-                ca.height = img.naturalHeight;
+                canvasInvisible.width = img.naturalWidth;
+                canvasInvisible.height = img.naturalHeight;
 
-                const ct = ca.getContext("2d");
+                const ctx = canvasInvisible.getContext("2d");
+                ctx.drawImage(img, 0, 0);
 
-                ct.drawImage(img, 0, 0);
+                const imageData = ctx.getImageData(0, 0, canvasInvisible.width, canvasInvisible.height);
+                // QRコードのデータオブジェクト取得
+                const qrObj = getQRObject(imageData);
+                // QRの表示
+                ctx.putImageData(imageData, 0, 0);
+                const canvas = document.getElementById("imagePreview").getContext("2d");
+                canvas.clearRect(0, 0, 1000, 1000); // canvasの初期化 前画像の削除
 
-                var data = ct.getImageData(0, 0, ca.width, ca.height);
-                const qrObj = jsQR(data.data, ca.width, ca.height);
-                const qrData = qrObj.data;
-                console.log(qrData);
+                // putImageDataした画像サイズからhtmlのcanvas要素のwidth,heightへのscale
+                const hScale = 512 / canvasInvisible.height;
+                const wScale = hScale;
+                canvas.scale(wScale, hScale);
+                canvas.drawImage(canvasInvisible, 0, 0);
+                canvas.scale(1 / wScale, 1 / hScale);
 
-                return data;
+                return imageData;
             }
         </script>
 
         <input type="file" onchange="onFileSelected(this)" />
         <br />
-        <canvas id="test_canvas" width="256" height="256" style="border: 1px solid"></canvas>
+        <canvas id="imagePreview" width="512" height="512" style="border: 1px solid"></canvas>
     </body>
 </html>
