@@ -15,8 +15,16 @@
             $(document).ready(function () {
                 setUserId(); // useridをテキストフィールドに入力
                 setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
+                setAttendedSheetId(osql.getParam("sheet"));
             });
 
+            // sheet_idのデフォルト値として直近の出席した席を入力
+            function setAttendedSheetId(sheetId) {
+                if (sheetId) {
+                    document.getElementById("sheet_id").value = sheetId;
+                    document.getElementById("sheet_id").setAttribute("readonly", "");
+                }
+            }
             // radioボタンをデフォルトで選択状態にする
             function setCheckedRadio(state) {
                 if (state == "leave") {

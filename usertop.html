@@ -39,7 +39,7 @@
                 } else if (objects[0].is_attend == 1) {
                     document.getElementById(
                         "attendanceLink"
-                    ).innerHTML = `<a href="register/attendance.html?state=leave">出席登録へ</a>`;
+                    ).innerHTML = `<a href="register/attendance.html?state=leave&sheet=${objects[0].sheet_id}">出席登録へ</a>`;
                 }
             }
         </script>
