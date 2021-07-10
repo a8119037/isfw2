@@ -32,14 +32,14 @@
                 ).outerHTML = `最終登録: ${objects[0].created_at}, 座席${objects[0].sheet_id}`;
 
                 // attendance.htmlへのリンク
-                if (objects[0].is_attend == 0) {
-                    document.getElementById(
-                        "attendanceLink"
-                    ).innerHTML = `<a href="register/attendance.html">出席登録へ</a>`;
-                } else if (objects[0].is_attend == 1) {
+                if (objects[0].is_attend == true) {
                     document.getElementById(
                         "attendanceLink"
                     ).innerHTML = `<a href="register/attendance.html?state=leave&sheet=${objects[0].sheet_id}">出席登録へ</a>`;
+                } else {
+                    document.getElementById(
+                        "attendanceLink"
+                    ).innerHTML = `<a href="register/attendance.html">出席登録へ</a>`;
                 }
             }
         </script>
