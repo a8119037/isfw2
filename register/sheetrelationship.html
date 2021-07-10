@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+
+        function button1Pressed() {
+            execInsert();
+        }
+
+        async function execInsert() {
+            var Sheet01 = document.getElementById("tf1").value;
+            var Sheet02 = document.getElementById("tf2").value;
+            var relation = document.getElementById("tf3").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result").innerHTML = "OK";
+        }
+    </script>
+</head>
+
+<body>
+    <h1>座席管理</h1>
+    sheet_id_01:<input id="tf1" value="" type="textfield" />
+    <br />
+    sheet_id_02:<input id="tf2" value="" type="textfield" />
+    <br />
+    relation:<input id="tf3" value="" type="textfield" />例：横、縦、斜めなど
+    <br />
+    <button onclick="button1Pressed()">登録</button>
+    <br />
+    <p id="result"></p>
+</body>
+
+</html>
