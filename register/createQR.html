@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <script type="text/javascript" src="../lib/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/osql.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+        <script>
+            osql.requireLogin();
+
+            // フォーム内容をUser_Sheetに登録させる
+            $(document).ready(function () {});
+        </script>
+    </head>
+
+    <body>
+        <h1>QRコード自動生成</h1>
+        <br />
+        <div id="qrcode"></div>
+        QRコードのテキスト:<input id="qrcode" value="" type="textfield" required autofocus />
+        <button onclick="button1Pressed()">登録</button>
+        <br />
+        <a id="usertopLink" href="../usertop.html">トップへ戻る</a>
+        <p id="result"></p>
+    </body>
+</html>
