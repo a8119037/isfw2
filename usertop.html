@@ -33,7 +33,10 @@
                     info += `退席 `;
                 }
                 info += `座席${objects[0].sheet_id}, ${objects[0].created_at}`;
-
+                if (objects[0].is_attend == 0) {
+                    const datetimeDiff = getDatetimeDiff(objects[0].created_at, objects[1].created_at);
+                    info += `, 滞在時間: ${datetimeDiff}秒`;
+                }
                 document.getElementById("attendanceInfo").outerHTML = info;
 
                 // attendance.htmlへのリンク
@@ -46,6 +49,13 @@
                         "attendanceLink"
                     ).innerHTML = `<a href="register/attendance.html">出席登録へ</a>`;
                 }
+            }
+
+            function getDatetimeDiff(after, before) {
+                var date1 = new Date(before);
+                var date2 = new Date(after);
+                var termSecond = (date2.getTime() - date1.getTime()) / 1000;
+                return termSecond;
             }
         </script>
     </head>
