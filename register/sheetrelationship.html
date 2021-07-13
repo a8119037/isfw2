@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+
+        function button1Pressed() {
+            execInsert();
+        }
+
+        async function execInsert() {
+            var Sheet01 = document.getElementById("tf1").value;
+            var Sheet02 = document.getElementById("tf2").value;
+            var relation = document.getElementById("tf3").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result").innerHTML = "OK";
+        }
+
+        function button2Pressed() {
+            execInsert2();
+        }
+
+        async function execInsert2() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf22").value;
+            var relation = document.getElementById("tf32").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result2").innerHTML = "OK";
+        }
+
+        function button3Pressed() {
+            execInsert3();
+        }
+
+        async function execInsert3() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf23").value;
+            var relation = document.getElementById("tf33").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result3").innerHTML = "OK";
+        }
+
+        function button4Pressed() {
+            execInsert4();
+        }
+
+        async function execInsert4() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf24").value;
+            var relation = document.getElementById("tf34").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result4").innerHTML = "OK";
+        }
+
+        function button5Pressed() {
+            execInsert5();
+        }
+
+        async function execInsert5() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf25").value;
+            var relation = document.getElementById("tf35").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result5").innerHTML = "OK";
+        }
+
+        function button6Pressed() {
+            execInsert6();
+        }
+
+        async function execInsert6() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf26").value;
+            var relation = document.getElementById("tf36").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result6").innerHTML = "OK";
+        }
+
+        function button7Pressed() {
+            execInsert7();
+        }
+
+        async function execInsert7() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf27").value;
+            var relation = document.getElementById("tf37").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result7").innerHTML = "OK";
+        }
+
+        function button8Pressed() {
+            execInsert8();
+        }
+
+        async function execInsert8() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf28").value;
+            var relation = document.getElementById("tf38").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result8").innerHTML = "OK";
+        }
+
+        function button9Pressed() {
+            execInsert9();
+        }
+
+        async function execInsert9() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf29").value;
+            var relation = document.getElementById("tf39").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result9").innerHTML = "OK";
+        }
+
+        function button10Pressed() {
+            execInsert10();
+        }
+
+        async function execInsert10() {
+            var Sheet01 = document.getElementById("tf11").value;
+            var Sheet02 = document.getElementById("tf30").value;
+            var relation = document.getElementById("tf40").value;
+
+            var sql = `insert into Sheet_Relationship (sheet_id_01, sheet_id_02, relation) values("${Sheet01}", "${Sheet02}", "${relation}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById("result10").innerHTML = "OK";
+        }
+    </script>
+</head>
+
+<body>
+    <h1>座席管理</h1>
+    sheet_id_01:<input id="tf1" value="" type="textfield" />
+    <br />
+    sheet_id_02:<input id="tf2" value="" type="textfield" />
+    <br />
+    relation:<input id="tf3" value="" type="textfield" />例：横、縦、斜めなど
+    <br />
+    <button onclick="button1Pressed()">登録</button>
+    <br />
+    <p id="result"></p>
+    <h1>複数登録</h1>
+    sheet_id_01:<input id="tf11" value="" type="textfield" />
+    <br />
+    sheet_id_02:<input id="tf22" value="" type="textfield" />relation:<input id="tf32" value=""
+        type="textfield" /><button onclick="button2Pressed()">登録</button>
+    <p id="result2"></p>
+    <br />
+    sheet_id_02:<input id="tf23" value="" type="textfield" />relation:<input id="tf33" value=""
+        type="textfield" /><button onclick="button3Pressed()">登録</button>
+    <p id="result3"></p>
+    <br />
+    sheet_id_02:<input id="tf24" value="" type="textfield" />relation:<input id="tf34" value=""
+        type="textfield" /><button onclick="button4Pressed()">登録</button>
+    <p id="result4"></p>
+    <br />
+    sheet_id_02:<input id="tf25" value="" type="textfield" />relation:<input id="tf35" value=""
+        type="textfield" /><button onclick="button5Pressed()">登録</button>
+    <p id="result5"></p>
+    <br />
+    sheet_id_02:<input id="tf26" value="" type="textfield" />relation:<input id="tf36" value=""
+        type="textfield" /><button onclick="button6Pressed()">登録</button>
+    <p id="result6"></p>
+    <br />
+    sheet_id_02:<input id="tf27" value="" type="textfield" />relation:<input id="tf37" value=""
+        type="textfield" /><button onclick="button7Pressed()">登録</button>
+    <p id="result7"></p>
+    <br />
+    sheet_id_02:<input id="tf28" value="" type="textfield" />relation:<input id="tf38" value=""
+        type="textfield" /><button onclick="button8Pressed()">登録</button>
+    <p id="result8"></p>
+    <br />
+    sheet_id_02:<input id="tf29" value="" type="textfield" />relation:<input id="tf39" value=""
+        type="textfield" /><button onclick="button9Pressed()">登録</button>
+    <p id="result9"></p>
+    <br />
+    sheet_id_02:<input id="tf30" value="" type="textfield" />relation:<input id="tf40" value=""
+        type="textfield" /><button onclick="button10Pressed()">登録</button>
+    <p id="result10"></p>
+    <br />
+</body>
+
+</html>
