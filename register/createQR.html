@@ -6,13 +6,19 @@
 
         <script type="text/javascript" src="../lib/jquery.min.js"></script>
         <script type="text/javascript" src="../lib/osql.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 
         <script>
             osql.requireLogin();
 
-            // フォーム内容をUser_Sheetに登録させる
-            $(document).ready(function () {});
+            //
+            $(document).ready(function () {
+                const url = location.href;
+                const text = "?userid=170";
+                const info = url + text;
+                console.log(info);
+                $("#qrcode").qrcode(info);
+            });
         </script>
     </head>
 
