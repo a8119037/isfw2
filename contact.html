@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+
+        $(document).ready(function () {
+            execSelect1();
+        });
+
+        async function execSelect1() {
+            var sql = "select * from Users";
+            var objects = await osql.connect(sql);
+            console.log(objects);
+            var html = "";
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects.length; i++) {
+                html = html + "<tr>";
+                var object = objects[i];
+                html = html + "<td>" + object.id + "</td>";
+                html = html + "<td>" + object.name + "</td>";
+                html = html + "<td>" + object.gender + "</td>";
+                html = html + "<td>" + object.birthday + "</td>";
+                html = html + "</tr>";
+            }
+            html = html + "</table>";
+            document.getElementById("users").innerHTML = html;
+        }
+
+        //接触者を表示する
+        function button1Pressed() {
+            execSelect();
+        }
+
+        async function execSelect() {
+            //ユーザーのidデータを取得する
+            var name1 = document.getElementById("tf1").value;
+            var sql = `select * from Users where name = '${name1}'`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            var userid = objects[0].id;
+            console.log(userid);
+
+            //ユーザーが座った席の履歴データを割り出す
+            var sql1 = `select * from User_Sheet where user_id = '${userid}'`;
+            var objects1 = await osql.connect(sql1);
+            console.log(objects1);
+
+            //座った席のデータを格納
+            var sheetsave = [];
+            for (var i = 0; i < objects1.length; i++) {
+                sheetsave.push(objects1[i].sheet_id);
+            }
+            console.log(sheetsave);
+
+            //座った席から近くの席のデータを取得する
+            var sheetsave1 = {};
+            for (var j = 0; j < sheetsave.length; j++) {
+                var centersheet = sheetsave[j];
+                var sql2 = `select * from Sheet_Relationship where sheet_id_01 = '${centersheet}'`;
+                var objects2 = await osql.connect(sql2);
+                console.log(objects2);
+                for (var k = 0; k < objects2.length; k++) {
+                    sheetsave1[objects2[k].sheet_id_02] = objects2[k].relation;
+                }
+            }
+            console.log(sheetsave1);
+
+            //近くに座っていた人の席を表示する
+            var keys = Object.keys(sheetsave1);
+            var html = "";
+            html = html + '<table border="1">';
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                //その席に座った人を呼び出す
+                var sql3 = `select * from User_Sheet where sheet_id = '${key}'`;
+                var objects3 = await osql.connect(sql3);
+                console.log(objects3);
+                //console.log(objects3[0].user_id);
+                if (objects3.length === 0) {
+                    ;
+                }
+                else {
+                    var sql4 = `select * from Users where id = '${objects3[0].user_id}'`;
+                    var objects4 = await osql.connect(sql4);
+                    //console.log(objects4);
+                    if (objects4.length === 0) {
+                        ;
+                    }
+                    else {
+                        //var html = "";
+                        //html = html + '<table border="1">';
+                        html = html + "<tr>";
+                        html = html + "<td>" + objects3[0].sheet_id + "</td>";
+                        html = html + "<td>" + objects4[0].name + "</td>";
+                        html = html + "<td>" + objects3[0].created_at + "</td>";
+                        html = html + "<td>" + sheetsave1[key] + "</td>";
+                        html = html + "</tr>";
+                        //html = html + "</table>";
+                        //document.getElementById("result").innerHTML = html;
+                    }
+                }
+                html = html + "</table>";
+                document.getElementById("result").innerHTML = html;
+                //var sql4 = `select * from Users where id = '${objects3.user_id}'`;
+                //var objects4 = await osql.connect(sql4);
+                //console.log(objects4);
+                //var html = "";
+                //html = html + '<table border="1">';
+                //html = html + "<tr>";
+                //html = html + "<td>" + object.id + "</td>";
+                //html = html + "<td>" + object.name + "</td>";
+                //html = html + "<td>" + object.gender + "</td>";
+                //html = html + "<td>" + object.birthday + "</td>";
+                //html = html + "</tr>";
+                //html = html + "</table>";
+                //document.getElementById("users").innerHTML = html;
+            }
+            //
+            //var sql = `insert into Sheets (name, room) values("${Name}", "${Room}");`;
+            //var objects = await osql.connect(sql);
+            //console.log(objects);
+
+            //document.getElementById("result").innerHTML = "OK";
+        }
+    </script>
+</head>
+
+<body>
+    <h1>接触者管理ページ</h1>
+    <h2>Users</h2>
+    <p id="users">xxxx</p>
+    <br />
+    <h2>あなたの名前を入力してください！</h2>
+    name:<input id="tf1" value="" type="textfield" />
+    <button onclick="button1Pressed()">検索</button>
+    <br />
+    <h2>接触者は以下の人です</h2>
+    <p id="result"></p>
+</body>
+
+</html>
