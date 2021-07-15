@@ -11,8 +11,10 @@
     <script>
         osql.requireLogin();
 
+
         $(document).ready(function () {
             execSelect1();
+            init();
         });
 
         async function execSelect1() {
@@ -32,6 +34,11 @@
             }
             html = html + "</table>";
             document.getElementById("users").innerHTML = html;
+        }
+
+        function init() {
+            var name = sessionStorage.getItem("username");
+            document.getElementById("tf1").value = name;
         }
 
         //接触者を表示する
@@ -166,7 +173,7 @@
     <p id="users">xxxx</p>
     <br />
     <h2>あなたの名前を入力してください！</h2>
-    name:<input id="tf1" value="" type="textfield" />
+    name:<input id="tf1" value='' type="textfield" />
     <button onclick="button1Pressed()">検索</button>
     <br />
     <p id="usersheet"></p>
