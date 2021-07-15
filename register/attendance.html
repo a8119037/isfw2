@@ -41,7 +41,7 @@
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
                 userCheck(); // userの存在チェック
-                setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
+                setCheckedRadio(); // radioボタンをデフォルトで選択状態にする
                 setAttendedSheetId(osql.getParam("sheet_id")); // パラメータからsheet_idの自動入力
             });
 
@@ -51,18 +51,26 @@
                     document.getElementById("sheet_id").value = sheetId;
                 }
             }
+
             // radioボタンをデフォルトで選択状態にする
-            function setCheckedRadio(state) {
-                if (state == "leave") {
+            async function setCheckedRadio() {
+                const userId = sessionStorage.getItem("userid");
+                // ユーザの最新の出席状況をとってくる
+                const sql = `select * from User_Sheet where user_id = "${userId}" order by created_at desc;`;
+                const objects = await osql.connect(sql);
+                // 出席していたら退席する
+                if (objects[0].is_attend == true) {
                     document.getElementById("leave").setAttribute("checked", "");
                 } else {
                     document.getElementById("attend").setAttribute("checked", "");
                 }
             }
+
             // useridをテキストフィールドに入力
             function setUserId(id) {
                 document.getElementById("user_id").value = id;
             }
+
             // フォームのバリデーション
             function validationUserSheet() {
                 const userId = document.getElementById("user_id").value;
