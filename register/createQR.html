@@ -13,27 +13,34 @@
 
             //
             $(document).ready(function () {
-                const url = location.href;
-                const text = "?userid=170";
-                const info = url + text;
-                console.log(info);
-                $("#qrcode").qrcode(info);
+                for (let i = 1; i < 97; i++) {
+                    view(i);
+                }
             });
-            function button1() {
-                osql.logout();
+            function view(i) {
+                const url = "https://a8119037.github.io/isfw2/register/attendance.html";
+                const para = `?sheet_id=${i}`;
+                const info = url + para;
+                console.log(info);
+                const id = `qrcode${i}`;
+                const devQR = `<div id="${id}"></div>`;
+                const devUrl = `<p>${info}</p>`;
+                document
+                    .getElementById("result")
+                    .insertAdjacentHTML(
+                        "beforeend",
+                        devQR +
+                            devUrl +
+                            "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>"
+                    );
+                $(`#${id}`).qrcode(info);
             }
         </script>
     </head>
 
     <body>
-        <h1>QRコード自動生成</h1>
         <br />
-        <div id="qrcode"></div>
-        QRコードのテキスト:<input id="qrcode" value="" type="textfield" required autofocus />
-        <button onclick="button1Pressed()">登録</button>
         <br />
-        <button onclick="button1()"></button>
-        <a id="usertopLink" href="../usertop.html">トップへ戻る</a>
         <p id="result"></p>
     </body>
 </html>
