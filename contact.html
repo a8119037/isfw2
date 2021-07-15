@@ -53,6 +53,24 @@
             var sql1 = `select * from User_Sheet where user_id = '${userid}'`;
             var objects1 = await osql.connect(sql1);
             console.log(objects1);
+            //座った席を表示
+            var html = "";
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects1.length; i++) {
+                html = html + "<tr>";
+                var object = objects1[i];
+                html = html + "<td>" + object.sheet_id + "</td>";
+                html = html + "<td>" + object.created_at + "</td>";
+                if (object.is_attend == 1) {
+                    html = html + "<td>" + 'check-in' + "</td>";
+                }
+                else {
+                    html = html + "<td>" + 'check-out' + "</td>";
+                }
+                html = html + "</tr>";
+            }
+            html = html + "</table>";
+            document.getElementById("usersheet").innerHTML = html;
 
             //座った席のデータを格納
             var sheetsave = [];
@@ -104,32 +122,11 @@
                         html = html + "<td>" + objects3[0].created_at + "</td>";
                         html = html + "<td>" + sheetsave1[key] + "</td>";
                         html = html + "</tr>";
-                        //html = html + "</table>";
-                        //document.getElementById("result").innerHTML = html;
                     }
                 }
-                //var sql4 = `select * from Users where id = '${objects3.user_id}'`;
-                //var objects4 = await osql.connect(sql4);
-                //console.log(objects4);
-                //var html = "";
-                //html = html + '<table border="1">';
-                //html = html + "<tr>";
-                //html = html + "<td>" + object.id + "</td>";
-                //html = html + "<td>" + object.name + "</td>";
-                //html = html + "<td>" + object.gender + "</td>";
-                //html = html + "<td>" + object.birthday + "</td>";
-                //html = html + "</tr>";
-                //html = html + "</table>";
-                //document.getElementById("users").innerHTML = html;
             }
             html = html + "</table>";
             document.getElementById("result").innerHTML = html;
-            //
-            //var sql = `insert into Sheets (name, room) values("${Name}", "${Room}");`;
-            //var objects = await osql.connect(sql);
-            //console.log(objects);
-
-            //document.getElementById("result").innerHTML = "OK";
         }
     </script>
 </head>
@@ -143,6 +140,7 @@
     name:<input id="tf1" value="" type="textfield" />
     <button onclick="button1Pressed()">検索</button>
     <br />
+    <p id="usersheet"></p>
     <h2>接触者は以下の人です</h2>
     <p id="result"></p>
 </body>
