@@ -16,9 +16,11 @@
                 const sql = `select * from Users where id = "${user.studentid}"`;
                 const objects = await osql.connect(sql);
                 if (!objects.length) {
-                    insertUsers(user);
-                } else {
-                    console.log(2, objects);
+                    insertUsers(user); // 未登録のユーザはUsersに登録
+                    await userCheck(); // もう一度チェックにかける
+                    return;
+                } else if (objects.length) {
+                    setUserId(objects[0].id); // フォームにuser_idをセット
                 }
             }
 
@@ -30,10 +32,9 @@
 
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
-                userCheck();
-                setUserId(); // useridをテキストフィールドに入力
+                userCheck(); // userの存在チェック
                 setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
-                setAttendedSheetId(osql.getParam("sheet_id")); // sheet_idのデフォルト値として直近の出席した席を入力
+                setAttendedSheetId(osql.getParam("sheet_id")); // パラメータからsheet_idの自動入力
             });
 
             // パラメータからsheet_idの自動入力
@@ -51,9 +52,7 @@
                 }
             }
             // useridをテキストフィールドに入力
-            async function setUserId() {
-                let user = await osql.getMe(); // promiseObject
-                let id = user.studentid;
+            function setUserId(id) {
                 document.getElementById("user_id").value = id;
             }
             // フォームのバリデーション
