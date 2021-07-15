@@ -11,8 +11,20 @@
         <script>
             osql.requireLogin();
 
+            async function userCheck() {
+                const user = await osql.getMe();
+                const sql = `select * from Users where id = "${user.studentid}"`;
+                const objects = await osql.connect(sql);
+                if (!objects.length) {
+                    console.log(1, objects);
+                } else {
+                    console.log(2, objects);
+                }
+            }
+
             // フォーム内容をUser_Sheetに登録させる
             $(document).ready(function () {
+                userCheck();
                 setUserId(); // useridをテキストフィールドに入力
                 setCheckedRadio(osql.getParam("state")); // radioボタンをデフォルトで選択状態にする
                 setAttendedSheetId(osql.getParam("sheet_id")); // sheet_idのデフォルト値として直近の出席した席を入力
