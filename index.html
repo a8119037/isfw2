@@ -9,6 +9,18 @@
 
         <script>
             osql.requireLogin();
+            $(document).ready(function () {
+                fillLoginForm(); // 既ログインユーザのformの自動入力
+            });
+
+            // 既ログインユーザのformの自動入力
+            function fillLoginForm() {
+                const id = sessionStorage.getItem("userid");
+                if (id) {
+                    document.getElementById("tf1").value = id;
+                    document.getElementById("tf2").value = sessionStorage.getItem("mail");
+                }
+            }
 
             async function buttonPressed() {
                 var userid = document.getElementById("tf1").value;
