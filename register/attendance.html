@@ -33,9 +33,10 @@
                 }
             }
             // useridをテキストフィールドに入力
-            function setUserId() {
-                const userId = sessionStorage.getItem("userid");
-                document.getElementById("user_id").value = userId;
+            async function setUserId() {
+                let user = await osql.getMe(); // promiseObject
+                let id = user.studentid;
+                document.getElementById("user_id").value = id;
             }
             // フォームのバリデーション
             function validationUserSheet() {
