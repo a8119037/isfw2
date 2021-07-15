@@ -1,57 +1,53 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="lib/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/osql.js"></script>
 
-    <script type="text/javascript" src="lib/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/osql.js"></script>
+        <script>
+            osql.requireLogin();
 
-    <script>
-        osql.requireLogin();
+            async function buttonPressed() {
+                var username = document.getElementById("tf1").value;
+                var birthday = document.getElementById("tf2").value;
 
-        async function buttonPressed() {
-            var username = document.getElementById('tf1').value;
-            var birthday = document.getElementById('tf2').value;
+                var sql = `select * from Users where name="${username}";`;
+                var objects = await osql.connect(sql);
+                if (objects.length <= 0) {
+                    document.getElementById("result").innerHTML = "ログイン失敗：ユーザが見つかりません";
+                    return;
+                }
+                if (objects[0].birthday != birthday) {
+                    document.getElementById("result").innerHTML = "ログイン失敗：パスワードが違います";
+                    return;
+                }
+                // sessionStorageにログインユーザ情報登録
+                sessionStorage.setItem("userid", objects[0].id);
+                sessionStorage.setItem("username", objects[0].name);
+                sessionStorage.setItem("birthday", objects[0].birthday);
 
-            var sql = `select * from Users where name="${username}";`;
-            var objects = await osql.connect(sql);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
-                return;
+                location.href = "usertop.html";
             }
-            if (objects[0].birthday != birthday) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
-                return;
-            }
-            // sessionStorageにログインユーザ情報登録
-            sessionStorage.setItem('userid', objects[0].id);
-            sessionStorage.setItem('username', objects[0].name);
-            sessionStorage.setItem('birthday', objects[0].birthday);
+        </script>
+    </head>
 
-            location.href = 'usertop.html';
-        }
-
-    </script>
-
-</head>
-
-<body>
-    <h1>ユーザ管理　アプリケーション　v3</h1>
-    <div>
-        <h2>ログイン</h2>
-        username:<input id="tf1" value="" type="textfield">
-        <br>
-        birthday:<input id="tf2" value="" type="textfield">例：2000-01-01
-        <br>
-        <button onclick="buttonPressed()">ログイン</button>
-        <p id="result"></p>
-    </div>
-    <hr>
-    <p><a href="register/register.html">新規登録</a></p>
-    <hr>
-    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
-</body>
-
+    <body>
+        <h1>ユーザ管理　アプリケーション　v3</h1>
+        <div>
+            <h2>ログイン</h2>
+            student id:<input id="tf1" value="" type="textfield" />
+            <br />
+            gsuite address:<input id="tf2" value="" type="textfield" />例：18119187
+            <br />
+            <button onclick="buttonPressed()">ログイン</button>
+            <p id="result"></p>
+        </div>
+        <hr />
+        <p><a href="register/register.html">新規登録</a></p>
+        <hr />
+        <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
+    </body>
 </html>
