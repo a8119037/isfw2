@@ -11,23 +11,23 @@
             osql.requireLogin();
 
             async function buttonPressed() {
-                var username = document.getElementById("tf1").value;
-                var birthday = document.getElementById("tf2").value;
+                var userid = document.getElementById("tf1").value;
+                var mail = document.getElementById("tf2").value;
 
-                var sql = `select * from Users where name="${username}";`;
+                var sql = `select * from Users where id="${userid}";`;
                 var objects = await osql.connect(sql);
-                if (objects.length <= 0) {
+                if (!objects.length) {
                     document.getElementById("result").innerHTML = "ログイン失敗：ユーザが見つかりません";
                     return;
                 }
-                if (objects[0].birthday != birthday) {
+                if (objects[0].mail != mail) {
                     document.getElementById("result").innerHTML = "ログイン失敗：パスワードが違います";
                     return;
                 }
                 // sessionStorageにログインユーザ情報登録
                 sessionStorage.setItem("userid", objects[0].id);
                 sessionStorage.setItem("username", objects[0].name);
-                sessionStorage.setItem("birthday", objects[0].birthday);
+                sessionStorage.setItem("mail", objects[0].mail);
 
                 location.href = "usertop.html";
             }
@@ -38,9 +38,9 @@
         <h1>ユーザ管理　アプリケーション　v3</h1>
         <div>
             <h2>ログイン</h2>
-            student id:<input id="tf1" value="" type="textfield" />
+            student id:<input id="tf1" value="" type="textfield" />例：18119187
             <br />
-            gsuite address:<input id="tf2" value="" type="textfield" />例：18119187
+            gsuite address:<input id="tf2" value="" type="textfield" />例:a8119187@gsuite.si.aoyama.ac.jp
             <br />
             <button onclick="buttonPressed()">ログイン</button>
             <p id="result"></p>
