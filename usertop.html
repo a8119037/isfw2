@@ -1,74 +1,72 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="lib/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/osql.js"></script>
 
-    <script type="text/javascript" src="lib/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/osql.js"></script>
+        <script>
+            osql.requireLogin();
 
-    <script>
-        osql.requireLogin();
-
-        $().ready(function () {
-            init();
-            attendanceInfo();
-        });
-        function init() {
-            var name = sessionStorage.getItem("username");
-            document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
-        }
-
-        // 出席情報を表示
-        async function attendanceInfo() {
-            const userId = sessionStorage.getItem("userid");
-            // User_Sheetから最新の出席情報をとってくる
-            const sql = `select * from User_Sheet where user_id = "${userId}" order by created_at desc;`;
-            const objects = await osql.connect(sql);
-            console.log(objects[0]);
-            let info = `最終登録: `;
-            if (objects[0].is_attend == 1) {
-                info += `出席 `;
-            } else if (objects[0].is_attend == 0) {
-                info += `退席 `;
+            $().ready(function () {
+                init();
+                attendanceInfo();
+            });
+            function init() {
+                var name = sessionStorage.getItem("username");
+                document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
             }
-            info += `座席${objects[0].sheet_id}, ${objects[0].created_at}`;
-            if (objects[0].is_attend == 0) {
-                const datetimeDiff = getDatetimeDiff(objects[0].created_at, objects[1].created_at);
-                info += `, 滞在時間: ${datetimeDiff}秒`;
+
+            // 出席情報を表示
+            async function attendanceInfo() {
+                const userId = sessionStorage.getItem("userid");
+                // User_Sheetから最新の出席情報をとってくる
+                const sql = `select * from User_Sheet where user_id = "${userId}" order by created_at desc;`;
+                const objects = await osql.connect(sql);
+                console.log(objects[0]);
+                let info = `最終登録: `;
+                if (objects[0].is_attend == 1) {
+                    info += `チェックイン `;
+                } else if (objects[0].is_attend == 0) {
+                    info += `チェックアウト `;
+                }
+                info += `座席${objects[0].sheet_id}, ${objects[0].created_at}`;
+                if (objects[0].is_attend == 0) {
+                    const datetimeDiff = getDatetimeDiff(objects[0].created_at, objects[1].created_at);
+                    info += `, 滞在時間: ${datetimeDiff}秒`;
+                }
+                document.getElementById("attendanceInfo").outerHTML = info;
+
+                // attendance.htmlへのリンク
+                if (objects[0].is_attend == true) {
+                    document.getElementById(
+                        "attendanceLink"
+                    ).innerHTML = `<a href="register/attendance.html?sheet_id=${objects[0].sheet_id}">チェックアウトする</a>`;
+                } else {
+                    document.getElementById(
+                        "attendanceLink"
+                    ).innerHTML = `<a href="register/attendance.html">チェックインする</a>`;
+                }
             }
-            document.getElementById("attendanceInfo").outerHTML = info;
 
-            // attendance.htmlへのリンク
-            if (objects[0].is_attend == true) {
-                document.getElementById(
-                    "attendanceLink"
-                ).innerHTML = `<a href="register/attendance.html?state=leave&sheet=${objects[0].sheet_id}">出席登録へ</a>`;
-            } else {
-                document.getElementById(
-                    "attendanceLink"
-                ).innerHTML = `<a href="register/attendance.html">出席登録へ</a>`;
+            function getDatetimeDiff(after, before) {
+                var date1 = new Date(before);
+                var date2 = new Date(after);
+                var termSecond = (date2.getTime() - date1.getTime()) / 1000;
+                return termSecond;
             }
-        }
+        </script>
+    </head>
 
-        function getDatetimeDiff(after, before) {
-            var date1 = new Date(before);
-            var date2 = new Date(after);
-            var termSecond = (date2.getTime() - date1.getTime()) / 1000;
-            return termSecond;
-        }
-    </script>
-</head>
-
-<body>
-    <h1>ユーザトップ</h1>
-    <p id="welcome">ようこそxxさん</p>
-    <hr />
-    <a id="attendanceLink" href="register/attendance.html">出席登録へ</a>
-    <span id="attendanceInfo"></span>
-    <br>
-    <p><a href="contact.html">接触者一覧</a></p>
-</body>
-
+    <body>
+        <h1>ユーザトップ</h1>
+        <p id="welcome">ようこそxxさん</p>
+        <hr />
+        <a id="attendanceLink" href="register/attendance.html">出席登録へ</a>
+        <span id="attendanceInfo"></span>
+        <br />
+        <p><a href="contact.html">接触者一覧</a></p>
+    </body>
 </html>
