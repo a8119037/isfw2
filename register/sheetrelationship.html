@@ -11,6 +11,14 @@
     <script>
         osql.requireLogin();
 
+        $().ready(function () {
+            init();
+        });
+        function init() {
+            var name = sessionStorage.getItem("username");
+            document.getElementById("welcome").innerHTML = "ようこそ" + name + "さん";
+        }
+
         function button1Pressed() {
             execInsert();
         }
