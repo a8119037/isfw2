@@ -19,6 +19,9 @@
                 console.log(info);
                 $("#qrcode").qrcode(info);
             });
+            function button1() {
+                osql.logout();
+            }
         </script>
     </head>
 
@@ -29,6 +32,7 @@
         QRコードのテキスト:<input id="qrcode" value="" type="textfield" required autofocus />
         <button onclick="button1Pressed()">登録</button>
         <br />
+        <button onclick="button1()"></button>
         <a id="usertopLink" href="../usertop.html">トップへ戻る</a>
         <p id="result"></p>
     </body>
