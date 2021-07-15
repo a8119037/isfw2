@@ -18,11 +18,10 @@
                 setAttendedSheetId(osql.getParam("sheet")); // sheet_idのデフォルト値として直近の出席した席を入力
             });
 
-            // sheet_idのデフォルト値として直近の出席した席を入力
+            // パラメータからsheet_idの自動入力
             function setAttendedSheetId(sheetId) {
                 if (sheetId) {
                     document.getElementById("sheet_id").value = sheetId;
-                    document.getElementById("sheet_id").setAttribute("readonly", "");
                 }
             }
             // radioボタンをデフォルトで選択状態にする
@@ -37,7 +36,6 @@
             function setUserId() {
                 const userId = sessionStorage.getItem("userid");
                 document.getElementById("user_id").value = userId;
-                document.getElementById("user_id").setAttribute("readonly", "");
             }
             // フォームのバリデーション
             function validationUserSheet() {
