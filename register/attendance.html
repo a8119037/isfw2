@@ -16,10 +16,16 @@
                 const sql = `select * from Users where id = "${user.studentid}"`;
                 const objects = await osql.connect(sql);
                 if (!objects.length) {
-                    console.log(1, objects);
+                    insertUsers(user);
                 } else {
                     console.log(2, objects);
                 }
+            }
+
+            async function insertUsers(user) {
+                const sql = `insert into Users(id, name, mail) values(${user.studentid}, "${user.lname}${user.fname}", "${user.id}")`;
+                await osql.connect(sql);
+                console.log(sql);
             }
 
             // フォーム内容をUser_Sheetに登録させる

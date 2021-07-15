@@ -15,11 +15,11 @@
             }
 
             async function execInsert() {
-                var username = document.getElementById("tf1").value;
-                var gender = document.getElementById("tf2").value;
-                var birthday = document.getElementById("tf3").value;
+                var id = document.getElementById("tf1").value;
+                var username = document.getElementById("tf2").value;
+                var mail = document.getElementById("tf3").value;
 
-                var sql = `insert into Users (name, gender, birthday) values("${username}", "${gender}", "${birthday}");`;
+                var sql = `insert into Users (id, name, mail) values(${username}, "${user.lname}${user.fname}", "${mail}");`;
                 var objects = await osql.connect(sql);
                 console.log(objects);
 
