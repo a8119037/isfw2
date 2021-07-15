@@ -20,10 +20,18 @@
                     await userCheck(); // もう一度チェックにかける
                     return;
                 } else if (objects.length) {
+                    login(user); // コンタクトトレーシングへのログイン
                     setUserId(objects[0].id); // フォームにuser_idをセット
                 }
             }
+            // ログイン
+            function login(user) {
+                sessionStorage.setItem("userid", user.studentid);
+                sessionStorage.setItem("username", user.lname + user.fname);
+                sessionStorage.setItem("mail", user.id);
+            }
 
+            // ユーザをUsersに登録
             async function insertUsers(user) {
                 const sql = `insert into Users(id, name, mail) values(${user.studentid}, "${user.lname}${user.fname}", "${user.id}")`;
                 await osql.connect(sql);
