@@ -108,8 +108,6 @@
                         //document.getElementById("result").innerHTML = html;
                     }
                 }
-                html = html + "</table>";
-                document.getElementById("result").innerHTML = html;
                 //var sql4 = `select * from Users where id = '${objects3.user_id}'`;
                 //var objects4 = await osql.connect(sql4);
                 //console.log(objects4);
@@ -124,6 +122,8 @@
                 //html = html + "</table>";
                 //document.getElementById("users").innerHTML = html;
             }
+            html = html + "</table>";
+            document.getElementById("result").innerHTML = html;
             //
             //var sql = `insert into Sheets (name, room) values("${Name}", "${Room}");`;
             //var objects = await osql.connect(sql);
