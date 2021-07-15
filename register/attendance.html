@@ -60,6 +60,7 @@
                 const objects = await osql.connect(sql);
                 // 初使用ユーザの場合
                 if (!objects.length) {
+                    objects[0] = {};
                     objects[0].is_attend = false;
                 }
                 // 出席していたら退席する
