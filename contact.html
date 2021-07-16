@@ -1,184 +1,172 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="lib/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/osql.js"></script>
 
-    <script type="text/javascript" src="lib/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/osql.js"></script>
+        <script>
+            osql.requireLogin();
 
-    <script>
-        osql.requireLogin();
+            $(document).ready(function () {
+                execSelect1();
+                init();
+            });
 
-
-        $(document).ready(function () {
-            execSelect1();
-            init();
-        });
-
-        async function execSelect1() {
-            var sql = "select * from Users";
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            var html = "";
-            html = html + '<table border="1">';
-            for (var i = 0; i < objects.length; i++) {
-                html = html + "<tr>";
-                var object = objects[i];
-                //html = html + "<td>" + object.id + "</td>";
-                html = html + "<td>" + object.name + "</td>";
-                //html = html + "<td>" + object.gender + "</td>";
-                //html = html + "<td>" + object.birthday + "</td>";
-                //html = html + "</tr>";
-            }
-            html = html + "</table>";
-            document.getElementById("users").innerHTML = html;
-        }
-
-        function init() {
-            var name = sessionStorage.getItem("username");
-            document.getElementById("tf1").value = name;
-        }
-
-        //接触者を表示する
-        function button1Pressed() {
-            execSelect();
-        }
-
-        async function execSelect() {
-            //ユーザーのidデータを取得する
-            var name1 = document.getElementById("tf1").value;
-            var sql = `select * from Users where name = '${name1}'`;
-            var objects = await osql.connect(sql);
-            console.log(objects);
-
-            var userid = objects[0].id;
-            console.log(userid);
-
-            //ユーザーが座った席の履歴データを割り出す
-            var sql1 = `select * from User_Sheet where user_id = '${userid}'`;
-            var objects1 = await osql.connect(sql1);
-            console.log(objects1);
-            //座った席を表示
-            var html = "";
-            html = html + '<table border="1">';
-            for (var i = 0; i < objects1.length; i++) {
-                html = html + "<tr>";
-                var object = objects1[i];
-                html = html + "<td>" + 'sheet' + object.sheet_id + "</td>";
-                html = html + "<td>" + object.created_at + "</td>";
-                if (object.is_attend == 1) {
-                    html = html + "<td>" + 'check-in' + "</td>";
+            async function execSelect1() {
+                var sql = "select * from Users";
+                var objects = await osql.connect(sql);
+                console.log(objects);
+                var html = "";
+                html = html + '<table border="1">';
+                for (var i = 0; i < objects.length; i++) {
+                    html = html + "<tr>";
+                    var object = objects[i];
+                    //html = html + "<td>" + object.id + "</td>";
+                    html = html + "<td>" + object.name + "</td>";
+                    //html = html + "<td>" + object.gender + "</td>";
+                    //html = html + "<td>" + object.birthday + "</td>";
+                    //html = html + "</tr>";
                 }
-                else {
-                    html = html + "<td>" + 'check-out' + "</td>";
-                }
-                html = html + "</tr>";
+                html = html + "</table>";
+                document.getElementById("users").innerHTML = html;
             }
-            html = html + "</table>";
-            document.getElementById("usersheet").innerHTML = html;
 
-            //座った席のデータを格納
-            var sheetsave = [];
-            for (var i = 0; i < objects1.length; i++) {
-                sheetsave.push(objects1[i].sheet_id);
+            function init() {
+                var name = sessionStorage.getItem("username");
+                document.getElementById("tf1").value = name;
             }
-            console.log(sheetsave);
 
-            //座った席から近くの席のデータを取得する
-            var sheetsave1 = {};
-            for (var j = 0; j < sheetsave.length; j++) {
-                var centersheet = sheetsave[j];
-                var sql2 = `select * from Sheet_Relationship where sheet_id_01 = '${centersheet}'`;
-                var objects2 = await osql.connect(sql2);
-                console.log(objects2);
-                for (var k = 0; k < objects2.length; k++) {
-                    sheetsave1[objects2[k].sheet_id_02] = objects2[k].relation;
-                }
+            //接触者を表示する
+            function button1Pressed() {
+                execSelect();
             }
-            console.log(sheetsave1);
 
-            //近くに座っていた人の席を表示する
-            var keys = Object.keys(sheetsave1);
-            var html = "";
-            html = html + '<table border="1">';
-            for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                //その席に座った人を呼び出す
-                var sql3 = `select * from User_Sheet where sheet_id = '${key}'`;
-                var objects3 = await osql.connect(sql3);
-                console.log(objects3);
-                //console.log(objects3[0].user_id);
-                if (objects3.length === 0) {
-                    ;
+            async function execSelect() {
+                //ユーザーのidデータを取得する
+                var name1 = document.getElementById("tf1").value;
+                var sql = `select * from Users where name = '${name1}'`;
+                var objects = await osql.connect(sql);
+                console.log(objects);
+
+                var userid = objects[0].id;
+                console.log(userid);
+
+                //ユーザーが座った席の履歴データを割り出す
+                var sql1 = `select * from User_Sheet where user_id = '${userid}'`;
+                var objects1 = await osql.connect(sql1);
+                console.log(objects1);
+                //座った席を表示
+                var html = "";
+                html = html + '<table border="1">';
+                for (var i = 0; i < objects1.length; i++) {
+                    html = html + "<tr>";
+                    var object = objects1[i];
+                    html = html + "<td>" + "sheet" + object.sheet_id + "</td>";
+                    html = html + "<td>" + object.created_at + "</td>";
+                    if (object.is_attend == 1) {
+                        html = html + "<td>" + "check-in" + "</td>";
+                    } else {
+                        html = html + "<td>" + "check-out" + "</td>";
+                    }
+                    html = html + "</tr>";
                 }
-                else {
-                    //時間を表示
-                    var date1 = new Date(objects1[0].created_at);
-                    var date2 = new Date(objects1[1].created_at);
-                    var date3 = new Date(objects3[0].created_at);
-                    var date4 = new Date(objects3[1].created_at);
-                    console.log(date1);//ユーザーの入った時間
-                    console.log(date2);//ユーザーの出た時間
-                    console.log(date3);//周りの人が入った時間
-                    console.log(date4);//周りの人が出た時間
-                    var termSecond1 = (date1.getTime() - date3.getTime()) / 1000; //ユーザーと周りが入った時間の差
-                    var termSecond2 = (date1.getTime() - date4.getTime()) / 1000; //ユーザー入り、周りが出た時間の差
-                    var termSecond3 = (date2.getTime() - date3.getTime()) / 1000; //ユーザーが出て、周りが入った時間の差
-                    var termSecond4 = (date2.getTime() - date4.getTime()) / 1000; //ユーザーが出て、周りが出た時間の差
-                    if (termSecond1 < 0 && termSecond3 > 0 && termSecond4 < 0) {
-                        var contacttime = termSecond3
-                    }
-                    else if (termSecond1 < 0 && termSecond4 > 0) {
-                        var contacttime = (date4.getTime() - date3.getTime()) / 1000;
-                    }
-                    else if (termSecond1 > 0 && termSecond2 < 0 && termSecond4 > 0) {
-                        var contacttime = -termSecond2
-                    }
-                    else if (termSecond1 > 0 && termSecond4 < 0) {
-                        var contacttime = (date2.getTime() - date2.getTime()) / 1000;
-                    }
-                    else {
-                        continue;
-                    }
-                    var sql4 = `select * from Users where id = '${objects3[0].user_id}'`;
-                    var objects4 = await osql.connect(sql4);
-                    console.log(objects4);
-                    if (objects4.length === 0) {
-                        ;
-                    }
-                    else {
-                        //var html = "";
-                        //html = html + '<table border="1">';
-                        html = html + "<tr>";
-                        html = html + "<td>" + 'sheet' + objects3[0].sheet_id + "</td>";
-                        html = html + "<td>" + objects4[0].name + "</td>";
-                        //html = html + "<td>" + objects3[0].created_at + "</td>";
-                        html = html + "<td>" + sheetsave1[key] + "</td>";
-                        html = html + "<td>" + '接触時間' + contacttime + '秒' + "</td>";
-                        html = html + "</tr>";
+                html = html + "</table>";
+                document.getElementById("usersheet").innerHTML = html;
+
+                //座った席のデータを格納
+                var sheetsave = [];
+                for (var i = 0; i < objects1.length; i++) {
+                    sheetsave.push(objects1[i].sheet_id);
+                }
+                console.log(sheetsave);
+
+                //座った席から近くの席のデータを取得する
+                var sheetsave1 = {};
+                for (var j = 0; j < sheetsave.length; j++) {
+                    var centersheet = sheetsave[j];
+                    var sql2 = `select * from Sheet_Relationship where sheet_id_01 = '${centersheet}'`;
+                    var objects2 = await osql.connect(sql2);
+                    console.log(objects2);
+                    for (var k = 0; k < objects2.length; k++) {
+                        sheetsave1[objects2[k].sheet_id_02] = objects2[k].relation;
                     }
                 }
+                console.log(sheetsave1);
+
+                //近くに座っていた人の席を表示する
+                var keys = Object.keys(sheetsave1);
+                var html = "";
+                html = html + '<table border="1">';
+                for (var i = 0; i < keys.length; i++) {
+                    var key = keys[i];
+                    //その席に座った人を呼び出す
+                    var sql3 = `select * from User_Sheet where sheet_id = '${key}'`;
+                    var objects3 = await osql.connect(sql3);
+                    console.log(objects3);
+                    //console.log(objects3[0].user_id);
+                    if (objects3.length === 0) {
+                    } else {
+                        //時間を表示 safariだと"2021-07-16 13:14:09"のハイフンが原因で動かないのでフォーマットが必要
+                        var date1 = new Date(objects1[0].created_at.replace(/-/g, "/"));
+                        var date2 = new Date(objects1[1].created_at.replace(/-/g, "/"));
+                        var date3 = new Date(objects3[0].created_at.replace(/-/g, "/"));
+                        var date4 = new Date(objects3[1].created_at.replace(/-/g, "/"));
+                        console.log(date1); //ユーザーの入った時間
+                        console.log(date2); //ユーザーの出た時間
+                        console.log(date3); //周りの人が入った時間
+                        console.log(date4); //周りの人が出た時間
+                        var termSecond1 = (date1.getTime() - date3.getTime()) / 1000; //ユーザーと周りが入った時間の差
+                        var termSecond2 = (date1.getTime() - date4.getTime()) / 1000; //ユーザー入り、周りが出た時間の差
+                        var termSecond3 = (date2.getTime() - date3.getTime()) / 1000; //ユーザーが出て、周りが入った時間の差
+                        var termSecond4 = (date2.getTime() - date4.getTime()) / 1000; //ユーザーが出て、周りが出た時間の差
+                        if (termSecond1 < 0 && termSecond3 > 0 && termSecond4 < 0) {
+                            var contacttime = termSecond3;
+                        } else if (termSecond1 < 0 && termSecond4 > 0) {
+                            var contacttime = (date4.getTime() - date3.getTime()) / 1000;
+                        } else if (termSecond1 > 0 && termSecond2 < 0 && termSecond4 > 0) {
+                            var contacttime = -termSecond2;
+                        } else if (termSecond1 > 0 && termSecond4 < 0) {
+                            var contacttime = (date2.getTime() - date2.getTime()) / 1000;
+                        } else {
+                            continue;
+                        }
+                        var sql4 = `select * from Users where id = '${objects3[0].user_id}'`;
+                        var objects4 = await osql.connect(sql4);
+                        console.log(objects4);
+                        if (objects4.length === 0) {
+                        } else {
+                            //var html = "";
+                            //html = html + '<table border="1">';
+                            html = html + "<tr>";
+                            html = html + "<td>" + "sheet" + objects3[0].sheet_id + "</td>";
+                            html = html + "<td>" + objects4[0].name + "</td>";
+                            //html = html + "<td>" + objects3[0].created_at + "</td>";
+                            html = html + "<td>" + sheetsave1[key] + "</td>";
+                            html = html + "<td>" + "接触時間" + contacttime + "秒" + "</td>";
+                            html = html + "</tr>";
+                        }
+                    }
+                }
+                html = html + "</table>";
+                document.getElementById("result").innerHTML = html;
             }
-            html = html + "</table>";
-            document.getElementById("result").innerHTML = html;
-        }
-    </script>
-</head>
+        </script>
+    </head>
 
-<body>
-    <h1>接触者管理ページ</h1>
-    <h2>Users</h2>
-    <p id="users">xxxx</p>
-    <br />
-    <h2>あなたの名前を入力してください！</h2>
-    name:<input id="tf1" value='' type="textfield" />
-    <button onclick="button1Pressed()">検索</button>
-    <br />
-    <p id="usersheet"></p>
-    <h2>接触者は以下の人です</h2>
-    <p id="result"></p>
-</body>
-
+    <body>
+        <h1>接触者管理ページ</h1>
+        <h2>Users</h2>
+        <p id="users">xxxx</p>
+        <br />
+        <h2>あなたの名前を入力してください！</h2>
+        name:<input id="tf1" value="" type="textfield" />
+        <button onclick="button1Pressed()">検索</button>
+        <br />
+        <p id="usersheet"></p>
+        <h2>接触者は以下の人です</h2>
+        <p id="result"></p>
+    </body>
 </html>
